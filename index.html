@@ -21,6 +21,18 @@
         cache: false
     })
         .done(function (html) {
+            var coloR = [];
+
+           var dynamicColors = function () {
+                var r = Math.floor(Math.random() * 255);
+                var g = Math.floor(Math.random() * 255);
+                var b = Math.floor(Math.random() * 255);
+                return "rgb(" + r + "," + g + "," + b + ")";
+            };
+
+            for (var i in html.Countries) {
+                coloR.push(dynamicColors());
+            }
 
             function get_all_countries(html){
                 var temp_countries=[];
@@ -48,17 +60,9 @@
                     datasets: [{
                         label: '# of Votes',
                         data: get_confirmed(html),
+                        backgroundColor:coloR,
                         borderWidth: 1
                     }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
                 }
             });
 
