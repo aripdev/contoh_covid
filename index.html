@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+            integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Tugas Covid</title>
+</head>
+<body>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+    var master=$.ajax({
+        url: "https://api.covid19api.com/summary",
+        cache: false
+    })
+        .done(function (html) {
+
+            function get_all_countries(html){
+                var temp_countries=[];
+
+                html.Countries.forEach(function(el){
+                    temp_countries.push(el.Country);
+                })
+                return temp_countries;
+            }
+
+            function get_confirmed(html)
+            {
+                var temp_confirmed= [];
+
+                html.Countries.forEach(function (el) {
+                    temp_confirmed.push(el.TotalConfirmed);
+                })
+                return temp_confirmed;
+            }
+
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: get_all_countries(html),
+                    datasets: [{
+                        label: '# of Votes',
+                        data: get_confirmed(html),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+
+        });
+
+
+
+    </script>
+    
+    
+    
+
+</body>
+</html>
